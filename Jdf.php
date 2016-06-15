@@ -453,9 +453,8 @@ class Jdf{
 		return($this->_tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
 	}
 
-	/*	F	*/
-	function jmktime($h = '',$m = '',$s = '',$jm = '',$jd = '',$jy = '',$is_dst=-1)
-	{
+	function jmktime($h = '',$m = '',$s = '',$jm = '',$jd = '',$jy = '',$is_dst=-1){
+
 		$h = $this->tr_num($h); $m = $this->tr_num($m); $s = $this->tr_num($s); $jm= $this->tr_num($jm); $jd= $this->tr_num($jd); $jy= $this->tr_num($jy);
 		if($h == '' and $m == '' and $s == '' and $jm == '' and $jd == '' and $jy == '')
 		{
@@ -468,9 +467,8 @@ class Jdf{
 		}
 	}
 
-	/*	F	*/
-	function jgetdate($timestamp = '',$none = '',$tz = 'Asia/Tehran',$tn = 'en')
-	{
+	function jgetdate($timestamp = '',$tn = 'en'){
+
 		$ts    = ($timestamp == '')?time():$this->tr_num($timestamp);
 		$jdate = explode('_',$this->jdate('F_G_i_j_l_n_s_w_Y_z',$ts,'',$tz,$tn));
 		return array(
@@ -488,25 +486,20 @@ class Jdf{
 			);
 	}
 
-	/*	F	*/
-	function jcheckdate($jm,$jd,$jy)
-	{
+	function jcheckdate($jm,$jd,$jy){
+
 		$jm = $this->tr_num($jm); $jd = $this->tr_num($jd); $jy = $this->tr_num($jy);
 		$l_d= ($jm == 12)?(($jy % 33 % 4 - 1 == (int)($jy % 33*.05))?30:29):31 - (int)($jm / 6.5);
 		return($jm > 0 and $jd > 0 and $jy > 0 and $jm < 13 and $jd <= $l_d)?true:false;
 	}
 
-	/*	F	*/
-	function tr_num($str,$mod = 'en',$mf = '٫')
-	{
+	function tr_num($str,$mod = 'en',$mf = '٫'){
 		$num_a = array('0','1','2','3','4','5','6','7','8','9','.');
 		$key_a = array('۰','۱','۲','۳','۴','۵','۶','۷','۸','۹',$mf);
 		return($mod == 'fa')?str_replace($num_a,$key_a,$str):str_replace($key_a,$num_a,$str);
 	}
 
-	/*	F	*/
-	function jdate_words($array,$mod = '')
-	{
+	function jdate_words($array,$mod = ''){
 		foreach($array as $type=>$num)
 		{
 			$num = (int)$this->tr_num($num);
@@ -586,10 +579,9 @@ class Jdf{
 		return($mod == '')?$array:implode($mod,$array);
 	}
 
-	/*	F	*/
-	function gregorian_to_jalali($g_y,$g_m,$g_d,$mod = '')
-	{
-		$g_y = $this->tr_num($g_y); $g_m = $this->tr_num($g_m); $g_d = $this->tr_num($g_d);/* <= :اين سطر ، جزء تابع اصلي نيست */
+	function gregorian_to_jalali($g_y,$g_m,$g_d,$mod = ''){
+
+		$g_y = $this->tr_num($g_y); $g_m = $this->tr_num($g_m); $g_d = $this->tr_num($g_d);/* <= :این سطر جزء تابع اصلی نیست */
 		$d_4 = $g_y % 4;
 		$g_a = array(0,0,31,59,90,120,151,181,212,243,273,304,334);
 		$doy_g = $g_a[(int)$g_m] + $g_d;
@@ -620,9 +612,7 @@ class Jdf{
 		return($mod == '')?array($jy,$jm,$jd):$jy.$mod.$jm.$mod.$jd;
 	}
 
-	/*	F	*/
-	function jalali_to_gregorian($j_y,$j_m,$j_d,$mod = '')
-	{
+	function jalali_to_gregorian($j_y,$j_m,$j_d,$mod = ''){
 		$j_y   = $this->tr_num($j_y); $j_m   = $this->tr_num($j_m); $j_d   = $this->tr_num($j_d);/* <= :اين سطر ، جزء تابع اصلي نيست */
 		$d_4   = ($j_y + 1) % 4;
 		$doy_j = ($j_m < 7)?(($j_m - 1) * 31) + $j_d:(($j_m - 7) * 30) + $j_d + 186;
