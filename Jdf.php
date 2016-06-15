@@ -232,13 +232,9 @@ class Jdf{
 		return($this->_tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
 	}
 
-	function jstrftime($format,$timestamp = '',$none = '',$time_zone = 'Asia/Tehran',$tr_num = 'fa')
-	{
+	function jstrftime($format,$timestamp = ''){
 
-		$T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
-
-		if($time_zone != 'local')date_default_timezone_set(($time_zone == '')?'Asia/Tehran':$time_zone);
-		$ts = $T_sec + (($timestamp == '' or $timestamp == 'now')?time():$this->tr_num($timestamp));
+		$ts = $this->T_sec + (($timestamp == '' or $timestamp == 'now')?time():$this->tr_num($timestamp));
 		$date = explode('_',date('h_H_i_j_n_s_w_Y',$ts));
 		list($j_y,$j_m,$j_d) = $this->gregorian_to_jalali($date[7],$date[4],$date[3]);
 		$doy = ($j_m < 7)?(($j_m - 1) * 31) + $j_d - 1:(($j_m - 7) * 30) + $j_d + 185;
@@ -454,7 +450,7 @@ class Jdf{
 				default:$out .= $sub;
 			}
 		}
-		return($tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
+		return($this->_tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
 	}
 
 	/*	F	*/
