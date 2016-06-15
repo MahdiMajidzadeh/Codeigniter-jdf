@@ -6,20 +6,26 @@ Jdf library for Codeigniter
 Jdf library url: http://jdf.scr.ir/
 Codeigniter url: http://www.codeigniter.com/
 convert Jdf to Codeigniter library : mahdi majidzadeh
-url: http://mahdi.majidzadeh.ir
 */
 
-class Jdf
-{
+class Jdf{
 
-	/*	F	*/
-	function jdate($format,$timestamp = '',$none = '',$time_zone = 'Asia/Tehran',$tr_num = 'fa')
-	{
+	private $time_zone;
+	private $_tr_num;
+	private $T_sec;
 
-		$T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
+	public function __construct($config){
+		$this->time_zone = isset($config['time_zone'])?$config['time_zone']:'Asia/Tehran';
+		$this->_tr_num = isset($config['tr_num'])?$config['tr_num']:'fa';
+		$this->T_sec = isset($config['$T_sec'])?$config['$T_sec']:0;
 
-		if($time_zone != 'local')date_default_timezone_set(($time_zone == '')?'Asia/Tehran':$time_zone);
-		$ts = $T_sec + (($timestamp == '' or $timestamp == 'now')?time():$this->tr_num($timestamp));
+		if($this->time_zone != 'local')
+			date_default_timezone_set(($this->time_zone == '')?'Asia/Tehran':$this->time_zone);
+	}
+
+	function jdate($format,$timestamp = ''){
+		
+		$ts = $this->T_sec + (($timestamp == '' or $timestamp == 'now')?time():$this->tr_num($timestamp));
 		$date = explode('_',date('H_i_j_n_O_P_s_w_Y',$ts));
 		list($j_y,$j_m,$j_d) = $this->gregorian_to_jalali($date[8],$date[3],$date[2]);
 		$doy = ($j_m < 7)?(($j_m - 1) * 31) + $j_d - 1:(($j_m - 7) * 30) + $j_d + 185;
@@ -223,10 +229,9 @@ class Jdf
 				default:$out .= $sub;
 			}
 		}
-		return($tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
+		return($this->_tr_num != 'en')?$this->tr_num($out,'fa','.'):$out;
 	}
 
-	/*	F	*/
 	function jstrftime($format,$timestamp = '',$none = '',$time_zone = 'Asia/Tehran',$tr_num = 'fa')
 	{
 
@@ -484,7 +489,7 @@ class Jdf
 			'weekday'=>$jdate[4],
 			'month'  =>$jdate[0],
 			0        =>$this->tr_num($ts,$tn)
-		);
+			);
 	}
 
 	/*	F	*/
@@ -532,8 +537,8 @@ class Jdf
 					$h4 = $k4[$xy4];
 				}
 				$array[$type] = (($num > 99)?str_ireplace(array('12','13','14','19','20')
-						,array('هزار و دویست','هزار و سیصد','هزار و چهارصد','هزار و نهصد','دوهزار')
-						,substr($num,0,2)).((substr($num,2,2) == '00')?'':' و '):'').$h3.$p34.$h34.$h4;
+					,array('هزار و دویست','هزار و سیصد','هزار و چهارصد','هزار و نهصد','دوهزار')
+					,substr($num,0,2)).((substr($num,2,2) == '00')?'':' و '):'').$h3.$p34.$h34.$h4;
 				break;
 
 				case'mm':
